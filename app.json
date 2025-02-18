@@ -23,6 +23,10 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "PRIVATE_IP_URL": "http://192.168.0.28:5064/api/",
+      "PUBLIC_IP_URL": "http://10.31.29.101:5064/api/"
     }
   }
 }
