@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, FlatList } from "react-native";
+import { View, Text, TextInput, FlatList, StyleSheet } from "react-native";
 import { Checkbox, IconButton } from "react-native-paper";
 import Selector from "./Selector";
 
@@ -48,36 +48,18 @@ const ListDetail = ({
     <>
       <Selector title={title} actions={actions} filters={filters} />
       <View style={{ padding: 16 }}>
-        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 8 }}>
-          {title}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
         <TextInput
           placeholder="Search..."
           value={searchQuery}
           onChangeText={setSearchQuery}
-          style={{
-            height: 40,
-            borderColor: "gray",
-            borderWidth: 1,
-            marginBottom: 10,
-            paddingHorizontal: 8,
-            borderRadius: 5,
-          }}
+          style={styles.searchBar}
         />
         <FlatList
           data={showItems}
           keyExtractor={(item) => item.key}
           renderItem={({ item }) => (
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 8,
-                borderBottomWidth: 1,
-                borderBottomColor: "#ccc",
-              }}
-            >
+            <View style={styles.flatList}>
               <Checkbox
                 status={
                   selectedRowKeys.includes(item.key) ? "checked" : "unchecked"
@@ -88,15 +70,9 @@ const ListDetail = ({
             </View>
           )}
         />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 10,
-          }}
-        >
+        <View style={styles.navContainer}>
           <Text>
-            Showing {showItems.length} of {filteredData.length} results
+            Hiển thị {showItems.length} trên {filteredData.length} kết quả
           </Text>
           <View style={{ flexDirection: "row" }}>
             <IconButton
@@ -116,5 +92,34 @@ const ListDetail = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  searchBar: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 8,
+    borderRadius: 5,
+  },
+  flatList: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+  navContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+});
 
 export default ListDetail;

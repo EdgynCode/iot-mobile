@@ -60,6 +60,7 @@ const logout = async () => {
     });
 
     await AsyncStorage.removeItem("user");
+    console.log("Logout response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Logout error:", error.response?.data || error.message);

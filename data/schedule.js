@@ -27,26 +27,24 @@ export const getMonthData = (value, sessions) => {
   return lesson ? dayjs(lesson.startTime).month() : null;
 };
 
-export const getListData = (value, sessions) => {
-  let listData = [];
+// export const getListData = (value, sessions) => {
+//   let listData = [];
 
-  if (!sessions || sessions.length === 0) return listData;
+//   if (!sessions || sessions.length === 0) return listData;
 
-  sessions.forEach((session) => {
-    const sessionDate = dayjs(session.startTime);
-    if (
-      sessionDate.date() === value.date() &&
-      sessionDate.month() === value.month() &&
-      sessionDate.year() === value.year()
-    ) {
-      session.labIds.forEach((labId) => {
-        listData.push({
-          type: "info",
-          content: `Lab ID: ${labId}`,
-        });
-      });
-    }
-  });
+//   sessions.forEach((session) => {
+//     const sessionDate = dayjs(session.startTime);
+//     if (
+//       sessionDate.date() === value.date() &&
+//       sessionDate.month() === value.month() &&
+//       sessionDate.year() === value.year()
+//     ) {
+//       listData.push({
+//         type: "info",
+//         content: `Start time: ${session.startTime}`,
+//       });
+//     }
+//   });
 
-  return listData;
-};
+//   return listData;
+// };

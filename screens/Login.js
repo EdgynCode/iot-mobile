@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,30 +7,33 @@ import {
   Image,
   StyleSheet,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
-// import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { clearMessage } from "../redux/slices/message";
 import { login } from "../redux/actions/auth.action";
 
-const Login = () => {
-  // const navigation = useNavigation();
+const Login = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch(clearMessage());
   }, [dispatch]);
 
   const onSubmit = async (values) => {
+    setLoading(true);
     dispatch(login(values))
       .unwrap()
       .then(() => {
+        setLoading(false);
         Alert.alert("Thành công", "Đăng nhập thành công!");
-        // navigation.navigate("AccountDetail");
+        navigation.navigate("MainScreen");
       })
       .catch((error) => {
+        setLoading(false);
         Alert.alert("Lỗi", "Đăng nhập thất bại. Vui lòng thử lại.");
         console.log(error);
       });
@@ -42,7 +45,6 @@ const Login = () => {
       <Text style={styles.title}>
         TRƯỜNG ĐẠI HỌC SƯ PHẠM THÀNH PHỐ HỒ CHÍ MINH
       </Text>
-      <Text style={styles.subtitle}>Cổng thông tin đào tạo</Text>
 
       <Formik
         initialValues={{ userName: "", password: "" }}
@@ -92,8 +94,16 @@ const Login = () => {
               <Text style={styles.errorText}>{errors.password}</Text>
             )}
 
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Đăng nhập</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={styles.buttonText}>Đăng nhập</Text>
+              )}
             </TouchableOpacity>
           </View>
         )}
