@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import ListDetail from "../components/ListDetail";
-import { useLabData } from "../hooks/useLabData";
-import { labAction, labColumns } from "../data/lab";
+import { useStudentData } from "../hooks/useStudentData";
+import { studentAction, studentColumns } from "../data/student";
 
-const Labs = () => {
-  const { labs } = useLabData();
+const Students = () => {
+  const { students } = useStudentData();
   const [open, setOpen] = useState(false);
-  const actions = labAction();
+  const actions = studentAction();
 
   return (
     <>
       <View style={styles.container}>
-        <ListDetail data={labs} column={labColumns()} />
+        <ListDetail data={students} column={studentColumns()} />
       </View>
       <TouchableOpacity style={styles.addButton} onPress={() => setOpen(true)}>
         <Ionicons name="settings-outline" size={28} color="white" />
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Labs;
+export default Students;

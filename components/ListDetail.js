@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, FlatList, StyleSheet } from "react-native";
-import { Checkbox, IconButton } from "react-native-paper";
+import { View, Text, TextInput, StyleSheet } from "react-native";
+import { Checkbox, IconButton, DataTable } from "react-native-paper";
 import Selector from "./Selector";
-
 const ListDetail = ({
-  title,
   actions,
-  filters,
   data,
   column,
   onSelectionChange,
@@ -46,29 +43,13 @@ const ListDetail = ({
 
   return (
     <>
-      <Selector title={title} actions={actions} filters={filters} />
-      <View style={{ padding: 16 }}>
-        <Text style={styles.title}>{title}</Text>
+      <Selector actions={actions} />
+      <View style={{ flex: 1 }}>
         <TextInput
           placeholder="Search..."
           value={searchQuery}
           onChangeText={setSearchQuery}
           style={styles.searchBar}
-        />
-        <FlatList
-          data={showItems}
-          keyExtractor={(item) => item.key}
-          renderItem={({ item }) => (
-            <View style={styles.flatList}>
-              <Checkbox
-                status={
-                  selectedRowKeys.includes(item.key) ? "checked" : "unchecked"
-                }
-                onPress={() => toggleSelection(item.key)}
-              />
-              <Text style={{ flex: 1, marginLeft: 8 }}>{item.name}</Text>
-            </View>
-          )}
         />
         <View style={styles.navContainer}>
           <Text>
@@ -88,17 +69,39 @@ const ListDetail = ({
             />
           </View>
         </View>
+        <DataTable>
+          <DataTable.Header>
+            <DataTable.Title>Checkbox</DataTable.Title>
+            {column.map((col) => (
+              <DataTable.Title key={col.key}>{col.title}</DataTable.Title>
+            ))}
+          </DataTable.Header>
+          {showItems.map((item) => (
+            <DataTable.Row key={item.key}>
+              <DataTable.Cell>
+                <Checkbox
+                  status={
+                    selectedRowKeys.includes(item.key) ? "checked" : "unchecked"
+                  }
+                  onPress={() => toggleSelection(item.key)}
+                />
+              </DataTable.Cell>
+              {column.map((col) => (
+                <DataTable.Cell key={col.key}>
+                  {col.render
+                    ? col.render(item[col.dataIndex], item)
+                    : item[col.dataIndex]}
+                </DataTable.Cell>
+              ))}
+            </DataTable.Row>
+          ))}
+        </DataTable>
       </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
   searchBar: {
     height: 40,
     borderColor: "gray",
@@ -106,14 +109,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 8,
     borderRadius: 5,
-  },
-  flatList: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
   },
   navContainer: {
     flexDirection: "row",

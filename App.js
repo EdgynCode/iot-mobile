@@ -6,10 +6,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { store } from "./redux/store";
-import Login from "./screens/Login";
-import Schedule from "./screens/Schedule";
-import Labs from "./screens/Labs";
-import UserInfo from "./screens/UserInfo";
+import {
+  Login,
+  DeviceTypes,
+  Schedule,
+  Labs,
+  Students,
+  UserInfo,
+} from "./screens";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,12 +27,18 @@ function AppMainScreen() {
 
           switch (route.name) {
             case "Buổi học":
-              iconName = focused ? "home" : "home-outline";
+              iconName = focused ? "calendar-clear" : "calendar-clear-outline";
+              break;
+            case "Học sinh":
+              iconName = focused ? "person" : "person-outline";
               break;
             case "Bài thực hành":
-              iconName = focused ? "settings" : "settings-outline";
+              iconName = focused ? "book" : "book-outline";
               break;
-            case "Thông tin tài khoản":
+            case "Thiết bị":
+              iconName = focused ? "hardware-chip" : "hardware-chip-outline";
+              break;
+            case "Tài khoản":
               iconName = focused
                 ? "information-circle"
                 : "information-circle-outline";
@@ -44,8 +54,10 @@ function AppMainScreen() {
       })}
     >
       <Tab.Screen name="Buổi học" component={Schedule} />
+      <Tab.Screen name="Học sinh" component={Students} />
       <Tab.Screen name="Bài thực hành" component={Labs} />
-      <Tab.Screen name="Thông tin tài khoản" component={UserInfo} />
+      <Tab.Screen name="Thiết bị" component={DeviceTypes} />
+      <Tab.Screen name="Tài khoản" component={UserInfo} />
     </Tab.Navigator>
   );
 }

@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import ListDetail from "../components/ListDetail";
-import { useLabData } from "../hooks/useLabData";
-import { labAction, labColumns } from "../data/lab";
+import { useDeviceTypeData } from "../hooks/useDeviceTypeData";
+import { deviceListAction, deviceListColumns } from "../data/device";
 
-const Labs = () => {
-  const { labs } = useLabData();
+const DeviceTypes = () => {
+  const { deviceTypes } = useDeviceTypeData();
   const [open, setOpen] = useState(false);
-  const actions = labAction();
+  const actions = deviceListAction();
 
   return (
     <>
       <View style={styles.container}>
-        <ListDetail data={labs} column={labColumns()} />
+        <ListDetail data={deviceTypes} column={deviceListColumns()} />
       </View>
       <TouchableOpacity style={styles.addButton} onPress={() => setOpen(true)}>
         <Ionicons name="settings-outline" size={28} color="white" />
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Labs;
+export default DeviceTypes;
