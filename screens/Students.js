@@ -1,19 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Modal,
+  ActivityIndicator,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import ListDetail from "../components/ListDetail";
 import { useStudentData } from "../hooks/useStudentData";
 import { studentAction, studentColumns } from "../data/student";
 
 const Students = () => {
-  const { students } = useStudentData();
+  const { students, loading } = useStudentData();
   const [open, setOpen] = useState(false);
   const actions = studentAction();
 
   return (
     <>
       <View style={styles.container}>
-        <ListDetail data={students} column={studentColumns()} />
+        {loading ? (
+          <ActivityIndicator size="large" color="#003366" />
+        ) : (
+          <ListDetail data={students} column={studentColumns()} />
+        )}
       </View>
       <TouchableOpacity style={styles.addButton} onPress={() => setOpen(true)}>
         <Ionicons name="settings-outline" size={28} color="white" />

@@ -6,7 +6,7 @@ const PRIVATE_URL = Constants.expoConfig.extra.PRIVATE_IP_URL;
 const PUBLIC_URL = Constants.expoConfig.extra.PUBLIC_IP_URL;
 
 const axiosInstance = axios.create({
-  baseURL: PUBLIC_URL,
+  baseURL: PRIVATE_URL,
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",

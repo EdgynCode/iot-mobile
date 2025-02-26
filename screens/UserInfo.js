@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, ScrollView, StyleSheet, Image, Alert } from "react-native";
-import { Card, Title, Paragraph, Button, Divider } from "react-native-paper";
+import { Card, Title, Button, Divider } from "react-native-paper";
 import { useUserData } from "../hooks/useUserData";
 import { useDispatch } from "react-redux";
 import { formatFieldName } from "../data/userInfo";

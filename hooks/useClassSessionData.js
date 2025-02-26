@@ -4,7 +4,7 @@ import { getAllClassSessions } from "../redux/actions/classSession.action";
 
 export const useClassSessionData = () => {
   const dispatch = useDispatch();
-  const sessions = useSelector((state) => state.classSession);
+  const sessions = useSelector((state) => state.classSession.data);
 
   useEffect(() => {
     dispatch(getAllClassSessions());

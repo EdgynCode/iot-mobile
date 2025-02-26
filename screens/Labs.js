@@ -1,19 +1,30 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Modal,
+  ActivityIndicator,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import ListDetail from "../components/ListDetail";
 import { useLabData } from "../hooks/useLabData";
 import { labAction, labColumns } from "../data/lab";
 
 const Labs = () => {
-  const { labs } = useLabData();
+  const { labs, loading } = useLabData();
   const [open, setOpen] = useState(false);
   const actions = labAction();
 
   return (
     <>
       <View style={styles.container}>
-        <ListDetail data={labs} column={labColumns()} />
+        {loading ? (
+          <ActivityIndicator size="large" color="#003366" />
+        ) : (
+          <ListDetail data={labs} column={labColumns()} />
+        )}
       </View>
       <TouchableOpacity style={styles.addButton} onPress={() => setOpen(true)}>
         <Ionicons name="settings-outline" size={28} color="white" />

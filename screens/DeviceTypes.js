@@ -1,19 +1,30 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Modal,
+  ActivityIndicator,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import ListDetail from "../components/ListDetail";
 import { useDeviceTypeData } from "../hooks/useDeviceTypeData";
 import { deviceListAction, deviceListColumns } from "../data/device";
 
 const DeviceTypes = () => {
-  const { deviceTypes } = useDeviceTypeData();
+  const { deviceTypes, loading } = useDeviceTypeData();
   const [open, setOpen] = useState(false);
   const actions = deviceListAction();
 
   return (
     <>
       <View style={styles.container}>
-        <ListDetail data={deviceTypes} column={deviceListColumns()} />
+        {loading ? (
+          <ActivityIndicator size="large" color="#003366" />
+        ) : (
+          <ListDetail data={deviceTypes} column={deviceListColumns()} />
+        )}
       </View>
       <TouchableOpacity style={styles.addButton} onPress={() => setOpen(true)}>
         <Ionicons name="settings-outline" size={28} color="white" />

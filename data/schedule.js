@@ -9,14 +9,6 @@ export const scheduleAction = (setOpen) => [
   },
 ];
 
-export const steps = [
-  {
-    title: "Thông tin buổi học",
-  },
-  {
-    title: "Tạo danh sách nhóm",
-  },
-];
 export const getMonthData = (value, sessions) => {
   if (!sessions || sessions.length === 0) return null;
 
