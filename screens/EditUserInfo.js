@@ -1,61 +1,66 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import { Text, View, ScrollView, StyleSheet, Image, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+  Image,
+  Alert,
+  TextInput,
+} from "react-native";
 import { Card, Title, Button, Divider } from "react-native-paper";
 import { useUserData } from "../hooks/useUserData";
 import { useDispatch } from "react-redux";
 import { formatFieldName } from "../data/userInfo";
-import { logout, getCurrentUser } from "../redux/actions/auth.action";
+import { updateUserInfo } from "../redux/actions/auth.action";
 
-const UserInfo = ({ navigation }) => {
+const EditUserInfo = ({ navigation }) => {
   const dispatch = useDispatch();
   const { user } = useUserData();
-  const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState([]);
+  const [originalEmail, setOriginalEmail] = useState("");
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     if (user) {
       const filteredUserData = Object.entries(user).filter(
         ([key]) => formatFieldName(key) !== key
       );
-      setUserData(filteredUserData);
+      const userDataObject = Object.fromEntries(filteredUserData);
+      setUserData(userDataObject);
+      setOriginalEmail(user.email);
     }
   }, [user]);
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(getCurrentUser());
-    }, [dispatch])
-  );
-
-  const handleAlertLogout = () => {
-    Alert.alert("Xác nhận", "Bạn có chắc chắn muốn đăng xuất?", [
-      {
-        text: "Hủy",
-        style: "cancel",
-      },
-      {
-        text: "Đăng xuất",
-        onPress: handleLogout,
-      },
-    ]);
-  };
-
-  const handleLogout = async () => {
-    setLoading(true);
-
-    dispatch(logout())
+  const handleUpdate = (requestBody) => {
+    dispatch(updateUserInfo(requestBody))
       .unwrap()
       .then(() => {
-        Alert.alert("Đăng xuất thành công");
-        navigation.navigate("Login");
+        Alert.alert("Cập nhật thông tin thành công!");
+        navigation.goBack();
       })
       .catch(() => {
-        Alert.alert("Đăng xuất thất bại. Vui lòng thử lại.");
-      })
-      .finally(() => {
-        setLoading(false);
+        Alert.alert("Cập nhật thông tin thất bại!");
       });
+  };
+
+  const handleSave = () => {
+    const reverseFieldMapping = Object.fromEntries(
+      Object.entries(userData).map(([key]) => [formatFieldName(key), key])
+    );
+
+    const requestBody = {
+      id: user.id,
+      firstName: userData[reverseFieldMapping["Họ"]],
+      lastName: userData[reverseFieldMapping["Tên"]],
+      gender: userData[reverseFieldMapping["Giới tính"]],
+      email: userData[reverseFieldMapping["Email"]],
+      phoneNumber: userData[reverseFieldMapping["Số điện thoại"]],
+      doB: userData[reverseFieldMapping["Ngày sinh"]],
+    };
+    if (userData[reverseFieldMapping["Email"]] === originalEmail) {
+      delete requestBody.email;
+    }
+    handleUpdate(requestBody);
   };
 
   return (
@@ -72,32 +77,30 @@ const UserInfo = ({ navigation }) => {
 
       <Card style={styles.infoCard}>
         <View style={styles.titleContainer}>
-          <Card.Title title="Thông tin cơ bản" titleStyle={styles.cardTitle} />
+          <Card.Title
+            title="Sửa thông tin tài khoản"
+            titleStyle={styles.cardTitle}
+          />
         </View>
         <Divider />
         <Card.Content>
-          {userData.map(([key, value]) => (
+          {Object.entries(userData).map(([key, value]) => (
             <View key={key} style={styles.row}>
               <Text style={styles.label}>{formatFieldName(key)}:</Text>
-              <Text style={styles.value}>{value}</Text>
+              <TextInput
+                style={styles.input}
+                value={value}
+                onChangeText={(text) =>
+                  setUserData({ ...userData, [key]: text })
+                }
+              />
             </View>
           ))}
         </Card.Content>
       </Card>
 
-      <Button
-        mode="contained"
-        style={styles.button}
-        onPress={() => navigation.navigate("Sửa thông tin")}
-      >
-        Chỉnh sửa thông tin
-      </Button>
-      <Button
-        mode="contained"
-        style={styles.logOutButton}
-        onPress={handleAlertLogout}
-      >
-        Đăng xuất
+      <Button mode="contained" style={styles.button} onPress={handleSave}>
+        Lưu thay đổi
       </Button>
     </ScrollView>
   );
@@ -139,9 +142,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingRight: 10,
   },
-  value: {
+  input: {
     flex: 2,
-    textAlign: "left",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 5,
   },
   cardTitle: {
     color: "white",
@@ -158,4 +164,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserInfo;
+export default EditUserInfo;

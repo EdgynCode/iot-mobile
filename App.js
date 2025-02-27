@@ -13,6 +13,7 @@ import {
   Labs,
   Students,
   UserInfo,
+  EditUserInfo,
 } from "./screens";
 
 const Stack = createStackNavigator();
@@ -81,7 +82,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={isLoggedIn ? "Login" : "MainScreen"}>
+        <Stack.Navigator initialRouteName={isLoggedIn ? "MainScreen" : "Login"}>
           <Stack.Screen
             name="Login"
             component={Login}
@@ -92,6 +93,7 @@ export default function App() {
             component={AppMainScreen}
             options={{ headerShown: false }}
           />
+          <Stack.Screen name="Sửa thông tin" component={EditUserInfo} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -1,6 +1,8 @@
 export const formatFieldName = (key) => {
   const fieldMap = {
     userName: "Tên đăng nhập",
+    firstName: "Họ",
+    lastName: "Tên",
     fullName: "Họ tên",
     doB: "Ngày sinh",
     gender: "Giới tính",
