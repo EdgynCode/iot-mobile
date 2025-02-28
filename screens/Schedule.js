@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useClassSessionData } from "../hooks/useClassSessionData";
@@ -47,9 +47,11 @@ LocaleConfig.locales["vi"] = {
 };
 LocaleConfig.defaultLocale = "vi";
 
-const Schedule = () => {
-  const [selected, setSelected] = useState(dayjs().format("YYYY-MM-DD"));
+const Schedule = ({ navigation }) => {
   const { sessions } = useClassSessionData();
+  const [selectedDate, setSelectedDate] = useState(
+    dayjs().format("YYYY-MM-DD")
+  );
 
   const markedDates = sessions.reduce((acc, session) => {
     const date = dayjs(session.startTime).format("YYYY-MM-DD");
@@ -57,8 +59,8 @@ const Schedule = () => {
     return acc;
   }, {});
 
-  markedDates[selected] = {
-    ...markedDates[selected],
+  markedDates[selectedDate] = {
+    ...markedDates[selectedDate],
     selected: true,
     selectedColor: "blue",
   };
@@ -86,20 +88,21 @@ const Schedule = () => {
         }}
         markingType="dot"
         markedDates={markedDates}
-        onDayPress={(day) => setSelected(day.dateString)}
+        onDayPress={(day) => setSelectedDate(day.dateString)}
       />
 
       {sessions.some(
-        (session) => dayjs(session.startTime).format("YYYY-MM-DD") === selected
+        (session) =>
+          dayjs(session.startTime).format("YYYY-MM-DD") === selectedDate
       ) && (
         <View style={styles.eventContainer}>
           <Text style={styles.eventTitle}>
-            Buôi học ngày {dayjs(selected).format("DD/MM/YYYY")}
+            Buổi học ngày {dayjs(selectedDate).format("DD/MM/YYYY")}
           </Text>
           {sessions
             .filter(
               (session) =>
-                dayjs(session.startTime).format("YYYY-MM-DD") === selected
+                dayjs(session.startTime).format("YYYY-MM-DD") === selectedDate
             )
             .map((session, index) => (
               <Text key={index} style={styles.eventItem}>
@@ -114,7 +117,12 @@ const Schedule = () => {
       )}
 
       {/* Add Button */}
-      <TouchableOpacity style={styles.addButton}>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => {
+          navigation.navigate("Tạo buổi học", { selectedDate });
+        }}
+      >
         <Ionicons name="add" size={28} color="white" />
       </TouchableOpacity>
     </View>

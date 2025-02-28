@@ -14,6 +14,7 @@ import {
   Students,
   UserInfo,
   EditUserInfo,
+  CreateClassSession,
 } from "./screens";
 
 const Stack = createStackNavigator();
@@ -94,6 +95,7 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="Sửa thông tin" component={EditUserInfo} />
+          <Stack.Screen name="Tạo buổi học" component={CreateClassSession} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

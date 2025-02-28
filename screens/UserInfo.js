@@ -66,7 +66,7 @@ const UserInfo = ({ navigation }) => {
             source={require("../assets/default.png")}
             style={styles.avatar}
           />
-          <Title>{user?.userName || "User"}</Title>
+          <Title>{user?.firstName + " " + user?.lastName || "User"}</Title>
         </Card.Content>
       </Card>
 

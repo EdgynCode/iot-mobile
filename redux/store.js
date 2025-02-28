@@ -5,11 +5,13 @@ import labReducer from "./slices/lab.slice";
 import deviceTypeReducer from "./slices/deviceType.slice";
 import deviceReducer from "./slices/device.slice";
 import studentReducer from "./slices/student.slice";
+import classroomReducer from "./slices/classroom.slice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     classSession: classSessionReducer,
+    classrooms: classroomReducer,
     labs: labReducer,
     devicetypes: deviceTypeReducer,
     devices: deviceReducer,
