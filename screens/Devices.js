@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import ListDetail from "../components/ListDetail";
 import {
   View,
   StyleSheet,
@@ -8,14 +9,14 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import ListDetail from "../components/ListDetail";
-import { useDeviceTypeData } from "../hooks/useDeviceTypeData";
-import { deviceListAction, deviceListColumns } from "../data/device";
+import { useDeviceData } from "../hooks/useDeviceData";
+import { deviceAction, deviceColumns } from "../data/device";
 
-const DeviceTypes = ({ navigation }) => {
-  const { deviceTypes, loading } = useDeviceTypeData();
+const Devices = ({ route }) => {
+  const { id } = route.params;
+  const { devices, loading } = useDeviceData(id);
+  const actions = deviceAction();
   const [open, setOpen] = useState(false);
-  const actions = deviceListAction();
 
   return (
     <>
@@ -23,10 +24,7 @@ const DeviceTypes = ({ navigation }) => {
         {loading ? (
           <ActivityIndicator size="large" color="#003366" />
         ) : (
-          <ListDetail
-            data={deviceTypes}
-            column={deviceListColumns(navigation)}
-          />
+          <ListDetail data={devices} column={deviceColumns()} />
         )}
       </View>
       <TouchableOpacity style={styles.addButton} onPress={() => setOpen(true)}>
@@ -112,4 +110,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DeviceTypes;
+export default Devices;

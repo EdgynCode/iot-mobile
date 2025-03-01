@@ -43,7 +43,7 @@ const Login = ({ navigation }) => {
     <View style={styles.container}>
       <Image source={require("../assets/logo.png")} style={styles.logo} />
       <Text style={styles.title}>
-        TRƯỜNG ĐẠI HỌC SƯ PHẠM THÀNH PHỐ HỒ CHÍ MINH
+        TRƯỜNG ĐẠI HỌC SƯ PHẠM {"\n"} THÀNH PHỐ HỒ CHÍ MINH
       </Text>
 
       <Formik
@@ -121,21 +121,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   logo: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 100,
     resizeMode: "contain",
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
     marginVertical: 5,
+    paddingBottom: 20,
     color: "#002c5f",
-  },
-  subtitle: {
-    fontSize: 14,
-    color: "#555",
-    marginBottom: 20,
   },
   form: {
     width: "100%",

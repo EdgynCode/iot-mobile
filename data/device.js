@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 
 export const deviceListAction = () => [
   {
@@ -15,13 +15,23 @@ export const deviceListAction = () => [
     },
   },
 ];
-export const deviceListColumns = (navigate) => [
+export const deviceAction = () => [
+  {
+    title: "Thêm thiết bị",
+    onClick: (openModal) => {
+      openModal();
+    },
+  },
+];
+export const deviceListColumns = (navigation) => [
   {
     title: "Tên loại thiết bị",
     dataIndex: "tenLoaiThietBi",
     key: "tenLoaiThietBi",
     render: (text, record) => (
-      <TouchableOpacity onPress={() => navigate(`/devices/${record.id}`)}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Thiết bị", { id: record.id })}
+      >
         <Text>{text}</Text>
       </TouchableOpacity>
     ),
@@ -31,9 +41,63 @@ export const deviceListColumns = (navigate) => [
     dataIndex: "ghiChu",
     key: "ghiChu",
     render: (text, record) => (
-      <TouchableOpacity onPress={() => navigate(`/devices/${record.id}`)}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Thiết bị", { id: record.id })}
+      >
         <Text>{text}</Text>
       </TouchableOpacity>
+    ),
+  },
+];
+export const deviceColumns = () => [
+  {
+    title: "Số seri",
+    dataIndex: "serialNumber",
+    key: "serialNumber",
+    render: (text) => (
+      <View>
+        <Text>{text}</Text>
+      </View>
+    ),
+  },
+  {
+    title: "Tên thiết bị",
+    dataIndex: "tenThietBi",
+    key: "tenThietBi",
+    render: (text) => (
+      <View>
+        <Text>{text}</Text>
+      </View>
+    ),
+  },
+  {
+    title: "Ghi chú",
+    dataIndex: "ghiChu",
+    key: "ghiChu",
+    render: (text) => (
+      <View>
+        <Text>{text}</Text>
+      </View>
+    ),
+  },
+  {
+    title: "Trạng thái",
+    dataIndex: "isTrangThai",
+    key: "isTrangThai",
+    render: (text) => (
+      <View>
+        <Text>{text}</Text>
+      </View>
+    ),
+  },
+  {
+    title: "Hạn bảo hành",
+    dataIndex: "thoiGianBaoHanh",
+    key: "thoiGianBaoHanh",
+    render: (text) => (
+      <View>
+        <Text>{text}</Text>
+      </View>
     ),
   },
 ];

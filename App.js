@@ -9,6 +9,7 @@ import { store } from "./redux/store";
 import {
   Login,
   DeviceTypes,
+  Devices,
   Schedule,
   Labs,
   Students,
@@ -37,7 +38,7 @@ function AppMainScreen() {
             case "Bài thực hành":
               iconName = focused ? "book" : "book-outline";
               break;
-            case "Thiết bị":
+            case "Loại thiết bị":
               iconName = focused ? "hardware-chip" : "hardware-chip-outline";
               break;
             case "Tài khoản":
@@ -58,7 +59,7 @@ function AppMainScreen() {
       <Tab.Screen name="Buổi học" component={Schedule} />
       <Tab.Screen name="Học sinh" component={Students} />
       <Tab.Screen name="Bài thực hành" component={Labs} />
-      <Tab.Screen name="Thiết bị" component={DeviceTypes} />
+      <Tab.Screen name="Loại thiết bị" component={DeviceTypes} />
       <Tab.Screen name="Tài khoản" component={UserInfo} />
     </Tab.Navigator>
   );
@@ -70,7 +71,7 @@ export default function App() {
     const checkLoginStatus = async () => {
       try {
         const user = await AsyncStorage.getItem("user");
-        if (user !== null) {
+        if (user) {
           setIsLoggedIn(true);
         }
       } catch (error) {
@@ -96,6 +97,7 @@ export default function App() {
           />
           <Stack.Screen name="Sửa thông tin" component={EditUserInfo} />
           <Stack.Screen name="Tạo buổi học" component={CreateClassSession} />
+          <Stack.Screen name="Thiết bị" component={Devices} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

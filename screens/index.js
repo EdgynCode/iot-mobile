@@ -6,3 +6,4 @@ export { default as Students } from "./Students";
 export { default as UserInfo } from "./UserInfo";
 export { default as EditUserInfo } from "./EditUserInfo";
 export { default as CreateClassSession } from "./CreateClassSession";
+export { default as Devices } from "./Devices";

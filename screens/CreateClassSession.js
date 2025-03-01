@@ -103,20 +103,22 @@ const pickerSelectStyles = {
   inputIOS: {
     fontSize: 16,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "#ccc",
     borderRadius: 4,
     color: "black",
     paddingRight: 30,
     marginBottom: 5,
+    backgroundColor: "white",
   },
   inputAndroid: {
     fontSize: 16,
     borderWidth: 0.5,
-    borderColor: "black",
+    borderColor: "#ccc",
     borderRadius: 8,
     color: "black",
     paddingRight: 30,
     marginBottom: 5,
+    backgroundColor: "white",
   },
 };
 
