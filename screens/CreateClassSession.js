@@ -5,14 +5,24 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
+  Alert,
 } from "react-native";
 import { useClassroomData } from "../hooks/useClassroomData";
 import { useLabData } from "../hooks/useLabData";
+import { useUserData } from "../hooks/useUserData";
+import { useDispatch } from "react-redux";
+import { createClassSession } from "../redux/actions/classSession.action";
 import { Ionicons } from "@expo/vector-icons";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
 
+moment.locale("vi");
+
 const CreateClassSession = ({ navigation, route }) => {
+  const dispatch = useDispatch();
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [selectedDate, setSelectedDate] = useState(
@@ -22,8 +32,39 @@ const CreateClassSession = ({ navigation, route }) => {
   const [selectedLabs, setSelectedLabs] = useState([]);
   const { classrooms } = useClassroomData();
   const { labs } = useLabData();
+  const { user } = useUserData();
 
-  const handleSave = () => {};
+  const handleSave = async () => {
+    const currentUser = user;
+    const id = currentUser.id;
+    const sessionId = uuidv4();
+
+    const sessionData = {
+      id: sessionId,
+      lopHocId: selectedClass,
+      nguoiDayId: id,
+      startTime: moment(`${selectedDate}T${startTime}`).toISOString(),
+      endTime: moment(`${selectedDate}T${endTime}`).toISOString(),
+      wifiHotspot: "IOT-Hotspot",
+      brokerAddress: "iot.eclipse.org",
+      port: 1883,
+      clientId: uuidv4(),
+      labIds: [selectedLabs],
+    };
+
+    console.log("Session Data:", sessionData);
+
+    dispatch(createClassSession(sessionData))
+      .unwrap()
+      .then(() => {
+        Alert.alert("Tạo buổi học thành công!");
+        navigation.goBack();
+      })
+      .catch((error) => {
+        Alert.alert("Lỗi", "Tạo buổi học thất bại!");
+        console.log(error);
+      });
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({

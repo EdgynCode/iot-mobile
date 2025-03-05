@@ -1,7 +1,10 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useClassSessionData } from "../hooks/useClassSessionData";
+import { getAllClassSessions } from "../redux/actions/classSession.action";
 import { Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 
@@ -48,9 +51,16 @@ LocaleConfig.locales["vi"] = {
 LocaleConfig.defaultLocale = "vi";
 
 const Schedule = ({ navigation }) => {
+  const dispatch = useDispatch();
   const { sessions } = useClassSessionData();
   const [selectedDate, setSelectedDate] = useState(
     dayjs().format("YYYY-MM-DD")
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getAllClassSessions());
+    }, [dispatch])
   );
 
   const markedDates = sessions.reduce((acc, session) => {
