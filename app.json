@@ -19,14 +19,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.iotmobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "PRIVATE_IP_URL": "http://192.168.0.28:5064/api/",
-      "PUBLIC_IP_URL": "http://10.31.29.101:5064/api/"
-    }
+      "PUBLIC_IP_URL": "http://10.31.29.101:5064/api/",
+      "eas": {
+        "projectId": "6c124cfe-eec2-412a-a434-cb2a05aa66b0"
+      }
+    },
+    "owner": "nht080603"
   }
 }
