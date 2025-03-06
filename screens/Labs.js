@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useLayoutEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
 import {
   View,
   StyleSheet,
@@ -10,12 +12,33 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import ListDetail from "../components/ListDetail";
 import { useLabData } from "../hooks/useLabData";
-import { labAction, labColumns } from "../data/lab";
+import { labColumns } from "../data/lab";
+import { getAllLabs } from "../redux/actions/lab.action";
 
-const Labs = () => {
+const Labs = ({ navigation }) => {
+  const dispatch = useDispatch();
   const { labs, loading } = useLabData();
-  const [open, setOpen] = useState(false);
-  const actions = labAction();
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getAllLabs());
+    }, [dispatch])
+  );
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Tạo bài thực hành");
+          }}
+          style={styles.addButton}
+        >
+          <Ionicons name="add" size={24} color="white" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <>
@@ -26,39 +49,6 @@ const Labs = () => {
           <ListDetail data={labs} column={labColumns()} />
         )}
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={() => setOpen(true)}>
-        <Ionicons name="settings-outline" size={28} color="white" />
-      </TouchableOpacity>
-
-      <Modal
-        transparent={true}
-        animationType="slide"
-        visible={open}
-        onRequestClose={() => setOpen(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Tác vụ</Text>
-            {actions.map((action, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.modalButton}
-                onPress={() => {
-                  action.onClick(setOpen);
-                }}
-              >
-                <Text style={styles.modalButtonText}>{action.title}</Text>
-              </TouchableOpacity>
-            ))}
-            <TouchableOpacity
-              style={styles.modalButton}
-              onPress={() => setOpen(false)}
-            >
-              <Text style={styles.cancelButtonText}>Hủy</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </>
   );
 };
@@ -100,12 +90,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   addButton: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
     backgroundColor: "#003366",
-    padding: 15,
-    borderRadius: 50,
+    marginRight: 20,
+    padding: 10,
+    borderRadius: 10,
   },
 });
 

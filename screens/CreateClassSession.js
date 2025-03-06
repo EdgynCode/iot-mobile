@@ -1,11 +1,11 @@
 import React, { useState, useLayoutEffect } from "react";
 import {
-  View,
   StyleSheet,
   TouchableOpacity,
   Text,
   TextInput,
   Alert,
+  ScrollView,
 } from "react-native";
 import { useClassroomData } from "../hooks/useClassroomData";
 import { useLabData } from "../hooks/useLabData";
@@ -77,7 +77,7 @@ const CreateClassSession = ({ navigation, route }) => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.label}>Ngày bắt đầu</Text>
       <TextInput
         style={styles.input}
@@ -136,7 +136,7 @@ const CreateClassSession = ({ navigation, route }) => {
         }}
         value={selectedLabs}
       />
-    </View>
+    </ScrollView>
   );
 };
 

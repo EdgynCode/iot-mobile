@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback, useLayoutEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
@@ -56,6 +56,21 @@ const Schedule = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(
     dayjs().format("YYYY-MM-DD")
   );
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Tạo buổi học", { selectedDate });
+          }}
+          style={styles.addButton}
+        >
+          <Ionicons name="add" size={24} color="white" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, selectedDate]);
 
   useFocusEffect(
     useCallback(() => {
@@ -125,16 +140,6 @@ const Schedule = ({ navigation }) => {
             ))}
         </View>
       )}
-
-      {/* Add Button */}
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => {
-          navigation.navigate("Tạo buổi học", { selectedDate });
-        }}
-      >
-        <Ionicons name="add" size={28} color="white" />
-      </TouchableOpacity>
     </View>
   );
 };
@@ -168,12 +173,10 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   addButton: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
     backgroundColor: "#003366",
-    padding: 15,
-    borderRadius: 50,
+    marginRight: 20,
+    padding: 10,
+    borderRadius: 10,
   },
 });
 

@@ -14,6 +14,12 @@ export const studentAction = () => [
       setOpen(true);
     },
   },
+  {
+    title: "Hủy",
+    onClick: (setOpen) => {
+      setOpen(false);
+    },
+  },
 ];
 export const studentColumns = (navigate) => [
   {

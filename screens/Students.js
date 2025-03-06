@@ -50,12 +50,6 @@ const Students = () => {
                 <Text style={styles.modalButtonText}>{action.title}</Text>
               </TouchableOpacity>
             ))}
-            <TouchableOpacity
-              style={styles.modalButton}
-              onPress={() => setOpen(false)}
-            >
-              <Text style={styles.cancelButtonText}>Hủy</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -103,6 +97,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
+    backgroundColor: "#003366",
+    padding: 15,
+    borderRadius: 50,
+  },
+  importButton: {
+    position: "absolute",
+    bottom: 20,
+    left: 20,
     backgroundColor: "#003366",
     padding: 15,
     borderRadius: 50,

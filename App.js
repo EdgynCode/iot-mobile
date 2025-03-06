@@ -12,6 +12,7 @@ import {
   Devices,
   Schedule,
   Labs,
+  CreateLab,
   Students,
   UserInfo,
   EditUserInfo,
@@ -85,6 +86,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName={isLoggedIn ? "MainScreen" : "Login"}>
+          {/* <Stack.Navigator initialRouteName={"MainScreen"}> */}
           <Stack.Screen
             name="Login"
             component={Login}
@@ -97,6 +99,7 @@ export default function App() {
           />
           <Stack.Screen name="Sửa thông tin" component={EditUserInfo} />
           <Stack.Screen name="Tạo buổi học" component={CreateClassSession} />
+          <Stack.Screen name="Tạo bài thực hành" component={CreateLab} />
           <Stack.Screen name="Thiết bị" component={Devices} />
         </Stack.Navigator>
       </NavigationContainer>
