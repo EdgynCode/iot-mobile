@@ -57,12 +57,14 @@ const ListDetail = ({
           </Text>
           <View style={{ flexDirection: "row" }}>
             <IconButton
+              style={{ marginTop: -6 }}
               icon="chevron-left"
               disabled={currentPage === 1}
               onPress={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             />
             <Text>{currentPage}</Text>
             <IconButton
+              style={{ marginTop: -6 }}
               icon="chevron-right"
               disabled={endIndex >= totalPage}
               onPress={() => setCurrentPage((prev) => prev + 1)}

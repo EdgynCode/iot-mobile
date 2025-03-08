@@ -6,6 +6,7 @@ import deviceTypeReducer from "./slices/deviceType.slice";
 import deviceReducer from "./slices/device.slice";
 import studentReducer from "./slices/student.slice";
 import classroomReducer from "./slices/classroom.slice";
+import experimentReducer from "./slices/experiment.slice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     devicetypes: deviceTypeReducer,
     devices: deviceReducer,
     students: studentReducer,
+    experiments: experimentReducer,
   },
   devTools: true,
 });

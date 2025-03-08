@@ -8,31 +8,40 @@ import {
   Alert,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { createLab } from "../redux/actions/lab.action";
+import { createExperiment } from "../redux/actions/experiment.action";
 import { Ionicons } from "@expo/vector-icons";
 
-const CreateLab = ({ navigation }) => {
+const CreateExperiment = ({ navigation, route }) => {
+  const { id } = route.params;
   const dispatch = useDispatch();
-  const [name, setName] = useState("");
+  const [tenThiNghiem, setTenThiNghiem] = useState("");
+  const [moTaThiNghiem, setMoTaThiNghiem] = useState("");
   const [pathImage, setPathImage] = useState("");
+  const [ghiChu, setGhiChu] = useState("");
 
   const handleSave = async () => {
-    if (!name.trim() || !pathImage.trim()) {
-      Alert.alert("Lỗi", "Tên bài lab và đường dẫn ảnh không được để trống!");
+    if (!tenThiNghiem.trim() || !pathImage.trim()) {
+      Alert.alert(
+        "Lỗi",
+        "Tên thí nghiệm và đường dẫn ảnh không được để trống!"
+      );
       return;
     }
-    const labData = {
-      name: name,
+    const expData = {
+      tenThiNghiem: tenThiNghiem,
+      moTaThiNghiem: moTaThiNghiem,
       pathImage: pathImage,
+      ghiChu: ghiChu,
+      labId: id,
     };
-    dispatch(createLab(labData))
+    dispatch(createExperiment(expData))
       .unwrap()
       .then(() => {
-        Alert.alert("Tạo bài lab thành công!");
+        Alert.alert("Tạo thí nghiệm thành công!");
         navigation.goBack();
       })
       .catch((error) => {
-        Alert.alert("Lỗi", "Tạo bài lab thất bại!");
+        Alert.alert("Lỗi", "Tạo thí nghiệm thất bại!");
         console.log(error);
       });
   };
@@ -45,29 +54,41 @@ const CreateLab = ({ navigation }) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation, name, pathImage]);
+  }, [navigation, tenThiNghiem, moTaThiNghiem, pathImage, ghiChu, id]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Tên bài lab</Text>
+      <Text style={styles.label}>Tên thí nghiệm</Text>
       <TextInput
         style={styles.input}
-        value={name}
-        onChangeText={(text) => {
-          console.log("Name Updated:", text);
-          setName(text);
-        }}
+        value={tenThiNghiem}
+        onChangeText={setTenThiNghiem}
         placeholder="Tên bài lab"
+      />
+      <Text style={styles.label}>Mô tả</Text>
+      <TextInput
+        style={styles.input}
+        value={moTaThiNghiem}
+        onChangeText={setMoTaThiNghiem}
+        placeholder="Mô tả"
+        multiline
+        numberOfLines={3}
       />
       <Text style={styles.label}>Đường dẫn ảnh</Text>
       <TextInput
         style={styles.input}
         value={pathImage}
-        onChangeText={(text) => {
-          console.log("Path Image Updated:", text);
-          setPathImage(text);
-        }}
+        onChangeText={setPathImage}
         placeholder="Link ảnh"
+      />
+      <Text style={styles.label}>Ghi chú</Text>
+      <TextInput
+        style={styles.input}
+        value={ghiChu}
+        onChangeText={setGhiChu}
+        placeholder="Ghi chú"
+        multiline
+        numberOfLines={3}
       />
     </View>
   );
@@ -100,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateLab;
+export default CreateExperiment;

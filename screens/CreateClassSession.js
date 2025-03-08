@@ -43,8 +43,12 @@ const CreateClassSession = ({ navigation, route }) => {
       id: sessionId,
       lopHocId: selectedClass,
       nguoiDayId: id,
-      startTime: moment(`${selectedDate}T${startTime}`).toISOString(),
-      endTime: moment(`${selectedDate}T${endTime}`).toISOString(),
+      startTime: moment(`${selectedDate} ${startTime}`).format(
+        "YYYY-MM-DDTHH:mm:ss"
+      ),
+      endTime: moment(`${selectedDate} ${endTime}`).format(
+        "YYYY-MM-DDTHH:mm:ss"
+      ),
       wifiHotspot: "IOT-Hotspot",
       brokerAddress: "iot.eclipse.org",
       port: 1883,
@@ -74,7 +78,14 @@ const CreateClassSession = ({ navigation, route }) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [
+    navigation,
+    selectedDate,
+    startTime,
+    endTime,
+    selectedClass,
+    selectedLabs,
+  ]);
 
   return (
     <ScrollView style={styles.container}>

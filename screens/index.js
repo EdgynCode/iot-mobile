@@ -1,6 +1,9 @@
 export { default as Login } from "./Login";
 export { default as DeviceTypes } from "./DeviceTypes";
 export { default as Labs } from "./Labs";
+export { default as Experiments } from "./Experiments";
+export { default as CreateExperiment } from "./CreateExperiment";
+export { default as EditExperiment } from "./EditExperiment";
 export { default as CreateLab } from "./CreateLab";
 export { default as Schedule } from "./Schedule";
 export { default as Students } from "./Students";

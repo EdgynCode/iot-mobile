@@ -71,22 +71,14 @@ export const deviceColumns = () => [
     ),
   },
   {
-    title: "Ghi chú",
-    dataIndex: "ghiChu",
-    key: "ghiChu",
-    render: (text) => (
-      <View>
-        <Text>{text}</Text>
-      </View>
-    ),
-  },
-  {
     title: "Trạng thái",
     dataIndex: "isTrangThai",
     key: "isTrangThai",
     render: (text) => (
       <View>
-        <Text>{text}</Text>
+        <Text style={{ color: text ? "green" : "red" }}>
+          {text ? "Đã kết nối" : "Chưa kết nối"}
+        </Text>
       </View>
     ),
   },

@@ -1,12 +1,10 @@
-import React, { useState, useCallback, useLayoutEffect } from "react";
+import React, { useCallback, useLayoutEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import {
   View,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  Modal,
   ActivityIndicator,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -46,7 +44,7 @@ const Labs = ({ navigation }) => {
         {loading ? (
           <ActivityIndicator size="large" color="#003366" />
         ) : (
-          <ListDetail data={labs} column={labColumns()} />
+          <ListDetail data={labs} column={labColumns(navigation)} />
         )}
       </View>
     </>

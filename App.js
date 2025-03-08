@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import "react-native-gesture-handler";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { store } from "./redux/store";
 import {
@@ -12,6 +13,9 @@ import {
   Devices,
   Schedule,
   Labs,
+  Experiments,
+  CreateExperiment,
+  EditExperiment,
   CreateLab,
   Students,
   UserInfo,
@@ -99,7 +103,10 @@ export default function App() {
           />
           <Stack.Screen name="Sửa thông tin" component={EditUserInfo} />
           <Stack.Screen name="Tạo buổi học" component={CreateClassSession} />
+          <Stack.Screen name="Bài thí nghiệm" component={Experiments} />
           <Stack.Screen name="Tạo bài thực hành" component={CreateLab} />
+          <Stack.Screen name="Tạo thí nghiệm" component={CreateExperiment} />
+          <Stack.Screen name="Sửa thí nghiệm" component={EditExperiment} />
           <Stack.Screen name="Thiết bị" component={Devices} />
         </Stack.Navigator>
       </NavigationContainer>
