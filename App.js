@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-gesture-handler";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { store } from "./redux/store";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
   Login,
   DeviceTypes,
@@ -90,29 +91,33 @@ export default function App() {
     checkLoginStatus();
   }, []);
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={isLoggedIn ? "MainScreen" : "Login"}>
-          {/* <Stack.Navigator initialRouteName={"MainScreen"}> */}
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="MainScreen"
-            component={AppMainScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="Sửa thông tin" component={EditUserInfo} />
-          <Stack.Screen name="Tạo buổi học" component={CreateClassSession} />
-          <Stack.Screen name="Bài thí nghiệm" component={Experiments} />
-          <Stack.Screen name="Tạo bài thực hành" component={CreateLab} />
-          <Stack.Screen name="Tạo thí nghiệm" component={CreateExperiment} />
-          <Stack.Screen name="Sửa thí nghiệm" component={EditExperiment} />
-          <Stack.Screen name="Thiết bị" component={Devices} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName={isLoggedIn ? "MainScreen" : "Login"}
+          >
+            {/* <Stack.Navigator initialRouteName={"MainScreen"}> */}
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="MainScreen"
+              component={AppMainScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="Sửa thông tin" component={EditUserInfo} />
+            <Stack.Screen name="Tạo buổi học" component={CreateClassSession} />
+            <Stack.Screen name="Bài thí nghiệm" component={Experiments} />
+            <Stack.Screen name="Tạo bài thực hành" component={CreateLab} />
+            <Stack.Screen name="Tạo thí nghiệm" component={CreateExperiment} />
+            <Stack.Screen name="Sửa thí nghiệm" component={EditExperiment} />
+            <Stack.Screen name="Thiết bị" component={Devices} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </SafeAreaProvider>
   );
 }
