@@ -22,6 +22,9 @@ import {
   EditUserInfo,
   CreateClassSession,
 } from "./screens";
+import { enableScreens } from "react-native-screens";
+
+enableScreens();
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
