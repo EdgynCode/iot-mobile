@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -12,10 +12,20 @@ import ListDetail from "../components/ListDetail";
 import { useStudentData } from "../hooks/useStudentData";
 import { studentAction, studentColumns } from "../data/student";
 
-const Students = () => {
+const Students = ({ navigation }) => {
   const { students, loading } = useStudentData();
   const [open, setOpen] = useState(false);
   const actions = studentAction();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => {}} style={styles.exportButton}>
+          <Ionicons name="archive-outline" size={24} color="white" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <>
@@ -26,9 +36,6 @@ const Students = () => {
           <ListDetail data={students} column={studentColumns()} />
         )}
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={() => setOpen(true)}>
-        <Ionicons name="settings-outline" size={28} color="white" />
-      </TouchableOpacity>
 
       <Modal
         transparent={true}
@@ -93,13 +100,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
   },
-  addButton: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
+  exportButton: {
     backgroundColor: "#003366",
-    padding: 15,
-    borderRadius: 50,
+    marginRight: 20,
+    padding: 10,
+    borderRadius: 10,
   },
   importButton: {
     position: "absolute",
