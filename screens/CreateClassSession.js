@@ -6,6 +6,8 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  View,
+  ActivityIndicator,
 } from "react-native";
 import { useClassroomData } from "../hooks/useClassroomData";
 import { useLabData } from "../hooks/useLabData";
@@ -23,6 +25,7 @@ moment.locale("vi");
 
 const CreateClassSession = ({ navigation, route }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [selectedDate, setSelectedDate] = useState(
@@ -35,6 +38,7 @@ const CreateClassSession = ({ navigation, route }) => {
   const { user } = useUserData();
 
   const handleSave = async () => {
+    setLoading(true);
     const currentUser = user;
     const id = currentUser.id;
     const sessionId = uuidv4();
@@ -55,9 +59,6 @@ const CreateClassSession = ({ navigation, route }) => {
       clientId: uuidv4(),
       labIds: [selectedLabs],
     };
-
-    console.log("Session Data:", sessionData);
-
     dispatch(createClassSession(sessionData))
       .unwrap()
       .then(() => {
@@ -67,6 +68,9 @@ const CreateClassSession = ({ navigation, route }) => {
       .catch((error) => {
         Alert.alert("Lỗi", "Tạo buổi học thất bại!");
         console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -88,66 +92,73 @@ const CreateClassSession = ({ navigation, route }) => {
   ]);
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.label}>Ngày bắt đầu</Text>
-      <TextInput
-        style={styles.input}
-        value={selectedDate}
-        onChangeText={setSelectedDate}
-      />
-      <Text style={styles.label}>Giờ bắt đầu</Text>
-      <TextInput
-        style={styles.input}
-        value={startTime}
-        onChangeText={setStartTime}
-        placeholder="HH:mm"
-      />
-      <Text style={styles.label}>Giờ kết thúc</Text>
-      <TextInput
-        style={styles.input}
-        value={endTime}
-        onChangeText={setEndTime}
-        placeholder="HH:mm"
-      />
-      <Text style={styles.label}>Lớp</Text>
-      <RNPickerSelect
-        onValueChange={(itemValue) => setSelectedClass(itemValue)}
-        items={classrooms.map((classroom) => {
-          return {
-            key: classroom.id,
-            label: classroom.tenLop,
-            value: classroom.id,
-          };
-        })}
-        style={{
-          ...pickerSelectStyles,
-          inputIOS: { ...pickerSelectStyles.inputIOS },
-          inputAndroid: {
-            ...pickerSelectStyles.inputAndroid,
-          },
-        }}
-        value={selectedClass}
-      />
-      <Text style={styles.label}>Bài thực hành</Text>
-      <RNPickerSelect
-        onValueChange={(itemValue) => setSelectedLabs(itemValue)}
-        items={labs.map((lab) => {
-          return {
-            key: lab.id,
-            label: lab.name,
-            value: lab.id,
-          };
-        })}
-        style={{
-          ...pickerSelectStyles,
-          inputIOS: { ...pickerSelectStyles.inputIOS },
-          inputAndroid: {
-            ...pickerSelectStyles.inputAndroid,
-          },
-        }}
-        value={selectedLabs}
-      />
-    </ScrollView>
+    <View style={styles.container}>
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#f7f7f7" />
+        </View>
+      )}
+      <ScrollView style={styles.scrollContainer}>
+        <Text style={styles.label}>Ngày bắt đầu</Text>
+        <TextInput
+          style={styles.input}
+          value={selectedDate}
+          onChangeText={setSelectedDate}
+        />
+        <Text style={styles.label}>Giờ bắt đầu</Text>
+        <TextInput
+          style={styles.input}
+          value={startTime}
+          onChangeText={setStartTime}
+          placeholder="HH:mm"
+        />
+        <Text style={styles.label}>Giờ kết thúc</Text>
+        <TextInput
+          style={styles.input}
+          value={endTime}
+          onChangeText={setEndTime}
+          placeholder="HH:mm"
+        />
+        <Text style={styles.label}>Lớp</Text>
+        <RNPickerSelect
+          onValueChange={(itemValue) => setSelectedClass(itemValue)}
+          items={classrooms.map((classroom) => {
+            return {
+              key: classroom.id,
+              label: classroom.tenLop,
+              value: classroom.id,
+            };
+          })}
+          style={{
+            ...pickerSelectStyles,
+            inputIOS: { ...pickerSelectStyles.inputIOS },
+            inputAndroid: {
+              ...pickerSelectStyles.inputAndroid,
+            },
+          }}
+          value={selectedClass}
+        />
+        <Text style={styles.label}>Bài thực hành</Text>
+        <RNPickerSelect
+          onValueChange={(itemValue) => setSelectedLabs(itemValue)}
+          items={labs.map((lab) => {
+            return {
+              key: lab.id,
+              label: lab.name,
+              value: lab.id,
+            };
+          })}
+          style={{
+            ...pickerSelectStyles,
+            inputIOS: { ...pickerSelectStyles.inputIOS },
+            inputAndroid: {
+              ...pickerSelectStyles.inputAndroid,
+            },
+          }}
+          value={selectedLabs}
+        />
+      </ScrollView>
+    </View>
   );
 };
 
@@ -177,8 +188,22 @@ const pickerSelectStyles = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContainer: {
+    flex: 1,
     padding: 20,
     background: "#f7f7f7",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
   },
   label: {
     fontSize: 16,

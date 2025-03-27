@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 import {
   getCurrentUser,
   login,
@@ -34,7 +34,7 @@ const authReducer = createSlice({
         state.isLoggedIn = true;
         state.user = action.payload.user;
         state.roles = action.payload.roles;
-        AsyncStorage.setItem("user", JSON.stringify(action.payload.user));
+        SecureStore.setItemAsync("user", JSON.stringify(action.payload.user));
       })
       .addCase(login.rejected, (state) => {
         state.isLoggedIn = false;
@@ -45,7 +45,7 @@ const authReducer = createSlice({
         state.isLoggedIn = false;
         state.user = null;
         state.roles = null;
-        AsyncStorage.removeItem("user");
+        SecureStore.deleteItemAsync("user");
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.user = action.payload;

@@ -1,11 +1,13 @@
 import React, { useState, useLayoutEffect } from "react";
 import {
-  View,
   StyleSheet,
   TouchableOpacity,
   Text,
   TextInput,
   Alert,
+  ScrollView,
+  View,
+  ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { createLab } from "../redux/actions/lab.action";
@@ -13,10 +15,12 @@ import { Ionicons } from "@expo/vector-icons";
 
 const CreateLab = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [pathImage, setPathImage] = useState("");
 
   const handleSave = async () => {
+    setLoading(true);
     if (!name.trim() || !pathImage.trim()) {
       Alert.alert("Lỗi", "Tên bài lab và đường dẫn ảnh không được để trống!");
       return;
@@ -34,6 +38,9 @@ const CreateLab = ({ navigation }) => {
       .catch((error) => {
         Alert.alert("Lỗi", "Tạo bài lab thất bại!");
         console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -49,26 +56,27 @@ const CreateLab = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Tên bài lab</Text>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={(text) => {
-          console.log("Name Updated:", text);
-          setName(text);
-        }}
-        placeholder="Tên bài lab"
-      />
-      <Text style={styles.label}>Đường dẫn ảnh</Text>
-      <TextInput
-        style={styles.input}
-        value={pathImage}
-        onChangeText={(text) => {
-          console.log("Path Image Updated:", text);
-          setPathImage(text);
-        }}
-        placeholder="Link ảnh"
-      />
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#f7f7f7" />
+        </View>
+      )}
+      <ScrollView style={styles.scrollContainer}>
+        <Text style={styles.label}>Tên bài lab</Text>
+        <TextInput
+          style={styles.input}
+          value={name}
+          onChangeText={setName}
+          placeholder="Tên bài lab"
+        />
+        <Text style={styles.label}>Đường dẫn ảnh</Text>
+        <TextInput
+          style={styles.input}
+          value={pathImage}
+          onChangeText={setPathImage}
+          placeholder="Link ảnh"
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -76,8 +84,22 @@ const CreateLab = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContainer: {
+    flex: 1,
     padding: 20,
-    backgroundColor: "#f7f7f7",
+    background: "#f7f7f7",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
   },
   label: {
     fontSize: 16,

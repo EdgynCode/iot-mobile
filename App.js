@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 import "react-native-gesture-handler";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { store } from "./redux/store";
@@ -79,7 +79,7 @@ export default function App() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const user = await AsyncStorage.getItem("user");
+        const user = await SecureStore.getItemAsync("user");
         if (user) {
           setIsLoggedIn(true);
         }

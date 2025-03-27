@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosInstance";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 
 const register = async (
   id,
@@ -41,14 +41,14 @@ const login = async (userName, password) => {
     password,
   });
   if (response.data) {
-    await AsyncStorage.setItem("user", JSON.stringify(response.data));
+    await SecureStore.setItemAsync("user", JSON.stringify(response.data));
   }
   return response.data;
 };
 
 const logout = async () => {
   try {
-    const storedUser = JSON.parse(await AsyncStorage.getItem("user"));
+    const storedUser = JSON.parse(await SecureStore.getItemAsync("user"));
     if (!storedUser?.jwtAccessToken) {
       throw new Error("No access token found for logout.");
     }
@@ -59,8 +59,7 @@ const logout = async () => {
       },
     });
 
-    await AsyncStorage.removeItem("user");
-    console.log("Logout response:", response.data);
+    await SecureStore.deleteItemAsync("user");
     return response.data;
   } catch (error) {
     console.error("Logout error:", error.response?.data || error.message);
@@ -69,7 +68,7 @@ const logout = async () => {
 };
 
 const getCurrentUser = async () => {
-  const user = JSON.parse(await AsyncStorage.getItem("user"));
+  const user = JSON.parse(await SecureStore.getItemAsync("user"));
 
   if (user && user.userId) {
     const response = await axiosInstance.get(

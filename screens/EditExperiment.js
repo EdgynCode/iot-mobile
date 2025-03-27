@@ -1,11 +1,13 @@
 import React, { useState, useLayoutEffect } from "react";
 import {
-  View,
   StyleSheet,
   TouchableOpacity,
   Text,
   TextInput,
   Alert,
+  ScrollView,
+  View,
+  ActivityIndicator,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { updateExperiment } from "../redux/actions/experiment.action";
@@ -15,12 +17,14 @@ const EditExperiment = ({ navigation, route }) => {
   const { experiment } = route.params;
   const dispatch = useDispatch();
   const expId = experiment.id;
+  const [loading, setLoading] = useState(false);
   const [tenThiNghiem, setTenThiNghiem] = useState(experiment.tenThiNghiem);
   const [moTaThiNghiem, setMoTaThiNghiem] = useState(experiment.moTaThiNghiem);
   const [pathImage, setPathImage] = useState(experiment.pathImage);
   const [ghiChu, setGhiChu] = useState(experiment.ghiChu);
 
   const handleSave = async () => {
+    setLoading(true);
     if (!tenThiNghiem.trim() || !pathImage.trim()) {
       Alert.alert(
         "Lỗi",
@@ -44,6 +48,9 @@ const EditExperiment = ({ navigation, route }) => {
       .catch((error) => {
         Alert.alert("Lỗi", "Sửa thí nghiệm thất bại!");
         console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -59,38 +66,36 @@ const EditExperiment = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Tên thí nghiệm</Text>
-      <TextInput
-        style={styles.input}
-        value={tenThiNghiem}
-        onChangeText={setTenThiNghiem}
-        placeholder="Tên bài lab"
-      />
-      <Text style={styles.label}>Mô tả</Text>
-      <TextInput
-        style={styles.input}
-        value={moTaThiNghiem}
-        onChangeText={setMoTaThiNghiem}
-        placeholder="Mô tả"
-        multiline
-        numberOfLines={3}
-      />
-      <Text style={styles.label}>Đường dẫn ảnh</Text>
-      <TextInput
-        style={styles.input}
-        value={pathImage}
-        onChangeText={setPathImage}
-        placeholder="Link ảnh"
-      />
-      <Text style={styles.label}>Ghi chú</Text>
-      <TextInput
-        style={styles.input}
-        value={ghiChu}
-        onChangeText={setGhiChu}
-        placeholder="Ghi chú"
-        multiline
-        numberOfLines={3}
-      />
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#f7f7f7" />
+        </View>
+      )}
+      <ScrollView style={styles.scrollContainer}>
+        <Text style={styles.label}>Tên thí nghiệm</Text>
+        <TextInput
+          style={styles.input}
+          value={tenThiNghiem}
+          onChangeText={setTenThiNghiem}
+          placeholder="Tên bài lab"
+        />
+        <Text style={styles.label}>Mô tả</Text>
+        <TextInput
+          style={styles.input}
+          value={moTaThiNghiem}
+          onChangeText={setMoTaThiNghiem}
+          placeholder="Mô tả"
+          multiline
+          numberOfLines={3}
+        />
+        <Text style={styles.label}>Đường dẫn ảnh</Text>
+        <TextInput
+          style={styles.input}
+          value={pathImage}
+          onChangeText={setPathImage}
+          placeholder="Link ảnh"
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -98,8 +103,22 @@ const EditExperiment = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContainer: {
+    flex: 1,
     padding: 20,
-    backgroundColor: "#f7f7f7",
+    background: "#f7f7f7",
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
   },
   label: {
     fontSize: 16,

@@ -1,5 +1,5 @@
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 import Constants from "expo-constants";
 
 const PRIVATE_URL = Constants.expoConfig.extra.PRIVATE_IP_URL;
@@ -16,7 +16,7 @@ const axiosInstance = axios.create({
 
 // Thêm interceptor cho request
 axiosInstance.interceptors.request.use(async (config) => {
-  const storedUser = await AsyncStorage.getItem("user");
+  const storedUser = await SecureStore.getItemAsync("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
   if (user?.jwtAccessToken) {
     config.headers["Authorization"] = `Bearer ${user.jwtAccessToken}`;
@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
     ) {
       originalRequest._retry = true;
 
-      const storedUser = JSON.parse(AsyncStorage.getItem("user"));
+      const storedUser = JSON.parse(SecureStore.getItemAsync("user"));
       if (storedUser?.jwtRefreshToken) {
         try {
           // Refresh token
@@ -49,7 +49,7 @@ axiosInstance.interceptors.response.use(
 
           // Lưu lại token mới
           const newUser = refreshResponse.data;
-          AsyncStorage.setItem("user", JSON.stringify(newUser));
+          SecureStore.setItemAsync("user", JSON.stringify(newUser));
 
           // Gắn token mới vào request
           axiosInstance.defaults.headers.common[
@@ -63,7 +63,7 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(originalRequest);
         } catch (refreshError) {
           console.error("Failed to refresh token:", refreshError);
-          AsyncStorage.removeItem("user");
+          SecureStore.deleteItemAsync("user");
           window.location.href = "/login"; // Chuyển hướng về trang login nếu cần
         }
       }

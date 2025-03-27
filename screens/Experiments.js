@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
+import ExperimentCard from "../components/ExperimentCard";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useExperimentData } from "../hooks/useExperimentData";
 import {
@@ -33,7 +34,7 @@ const Experiments = ({ navigation, route }) => {
     navigation.navigate("Sửa thí nghiệm", { experiment });
   };
 
-  const handleDeleteExperiment = (id) => {
+  const handleDelete = (id) => {
     Alert.alert(
       "Xác nhận xóa",
       "Bạn có chắc chắn muốn xóa thí nghiệm này không?",
@@ -92,39 +93,13 @@ const Experiments = ({ navigation, route }) => {
         <ActivityIndicator size="large" color="#003366" />
       ) : (
         experiments.map((data, index) => (
-          <View key={index} style={styles.card}>
-            <Image
-              style={styles.image}
-              source={{
-                uri: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
-              }}
-            />
-            <View style={styles.cardContent}>
-              <Text
-                style={styles.title}
-              >{`Thí nghiệm: ${data.tenThiNghiem}`}</Text>
-              <Text style={styles.description}>{`Ngày tạo: ${formatDate(
-                data.ngayTao
-              )}`}</Text>
-              <View style={styles.actions}>
-                <TouchableOpacity onPress={() => handleEdit(data)}>
-                  <Ionicons name="pencil" size={24} color="#003366" />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleDeleteExperiment(data.id)}
-                >
-                  <Ionicons name="trash" size={24} color="red" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleShow(data)}>
-                  <Ionicons
-                    name="ellipsis-horizontal"
-                    size={24}
-                    color="black"
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
+          <ExperimentCard
+            cardKey={index}
+            data={data}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onShow={handleShow}
+          ></ExperimentCard>
         ))
       )}
     </ScrollView>
