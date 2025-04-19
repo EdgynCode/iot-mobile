@@ -136,6 +136,20 @@ const Schedule = ({ navigation }) => {
                 Giờ kết thúc: {dayjs(session.endTime).format("HH:mm")}
                 {"\n"}
                 Tên Wi-Fi Hotspot: {session.wifiHotspot}
+                {"\n"}
+                {"\n"}
+                <TouchableOpacity
+                  style={styles.detailButton}
+                  onPress={() =>
+                    navigation.navigate("Chi tiết buổi học", {
+                      sessionID: session.id,
+                      selectedDate: selectedDate,
+                      session,
+                    })
+                  }
+                >
+                  <Text style={styles.Button}>Chi tiết</Text>
+                </TouchableOpacity>
               </Text>
             ))}
         </View>
@@ -177,6 +191,17 @@ const styles = StyleSheet.create({
     marginRight: 20,
     padding: 10,
     borderRadius: 10,
+  },
+  detailButton: {
+    backgroundColor: "white",
+    padding: 5,
+    alignItems: "center",
+    textAlign: "center",
+    justifyContent: "center",
+    width: "100%",
+    borderRadius: 50,
+    marginVertical: 25,
+    borderWidth: 3,
   },
 });
 
