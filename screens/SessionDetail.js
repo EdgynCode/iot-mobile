@@ -1,10 +1,18 @@
-import React, { useState, useCallback, useLayoutEffect } from "react";
+import React, { useState, useCallback, useLayoutEffect, useMemo } from "react";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { StyleSheet, Text, ScrollView, ActivityIndicator } from "react-native";
 import { useDispatch } from "react-redux";
 import { useClassSessionData } from "../hooks/useClassSessionData";
 import { getAllClassSessions } from "../redux/actions/classSession.action";
 import dayjs from "dayjs";
+
+const extractMiddleCode = (id) => {
+  if (!id) return "";
+  const parts = id.split("-");
+  if (parts.length < 2) return id;
+  const rest = parts.slice(1).join("");
+  return rest.substring(0, 12);
+};
 
 const SessionDetail = () => {
   const route = useRoute();
@@ -42,22 +50,20 @@ const SessionDetail = () => {
       <Text style={styles.item}>
         Ngày học: {dayjs(sessionData.startTime).format("DD/MM/YYYY")}
       </Text>
-      <Text style={styles.item}>Mã buổi học: {sessionData.id}</Text>
+      <Text style={styles.item}>
+        Mã buổi học: {extractMiddleCode(sessionData.id)}
+      </Text>
       <Text style={styles.item}>Mã lớp học: {sessionData.lopHocId}</Text>
-      <Text style={styles.item}>Người dạy (ID): {sessionData.nguoiDayId}</Text>
 
       <Text style={styles.item}>
-        Bắt đầu: {dayjs(sessionData.startTime).format("HH:mm")}
-      </Text>
-      <Text style={styles.item}>
-        Kết thúc: {dayjs(sessionData.endTime).format("HH:mm")}
+        Thời gian: {dayjs(sessionData.startTime).format("HH:mm")} -{" "}
+        {dayjs(sessionData.endTime).format("HH:mm")}
       </Text>
 
-      <Text style={styles.item}>Danh sách Lab:</Text>
       {sessionData.labIds && sessionData.labIds.length > 0 ? (
-        sessionData.labIds.map((labId, index) => (
+        sessionData.labIds.map((name, index) => (
           <Text key={index} style={styles.item}>
-            Lab: {labId}
+            Bài thực hành: {name}
           </Text>
         ))
       ) : (
