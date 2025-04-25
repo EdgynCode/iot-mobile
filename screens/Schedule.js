@@ -132,7 +132,7 @@ const Schedule = ({ navigation }) => {
             Buổi học ngày {dayjs(selectedDate).format("DD/MM/YYYY")}
           </Text>
 
-          <ScrollView style={{ maxHeight: 300 }}>
+          <ScrollView style={{ maxHeight: 255 }}>
             {sessions
               .filter(
                 (session) =>
@@ -193,8 +193,8 @@ const styles = StyleSheet.create({
   },
   sessionBox: {
     marginBottom: 15,
-    paddingBottom: 50,
-    borderBottomWidth: 1,
+    paddingBottom: 10,
+    borderBottomWidth: 0.5,
     borderColor: "#ccc",
   },
   eventItem: {
