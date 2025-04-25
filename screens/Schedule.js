@@ -1,13 +1,20 @@
 import React, { useState, useCallback, useLayoutEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+} from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useClassSessionData } from "../hooks/useClassSessionData";
 import { getAllClassSessions } from "../redux/actions/classSession.action";
 import { Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 
+// Cấu hình tiếng Việt cho lịch
 LocaleConfig.locales["vi"] = {
   monthNames: [
     "Tháng 1",
@@ -100,6 +107,7 @@ const Schedule = ({ navigation }) => {
           <Ionicons name="search" size={28} color="black" />
         </TouchableOpacity>
       </View>
+
       <Calendar
         theme={{
           calendarBackground: "#fff",
@@ -124,34 +132,37 @@ const Schedule = ({ navigation }) => {
           <Text style={styles.eventTitle}>
             Buổi học ngày {dayjs(selectedDate).format("DD/MM/YYYY")}
           </Text>
-          {sessions
-            .filter(
-              (session) =>
-                dayjs(session.startTime).format("YYYY-MM-DD") === selectedDate
-            )
-            .map((session, index) => (
-              <Text key={index} style={styles.eventItem}>
-                Giờ bắt đầu: {dayjs(session.startTime).format("HH:mm")}
-                {"\n"}
-                Giờ kết thúc: {dayjs(session.endTime).format("HH:mm")}
-                {"\n"}
-                Tên Wi-Fi Hotspot: {session.wifiHotspot}
-                {"\n"}
-                {"\n"}
-                <TouchableOpacity
-                  style={styles.detailButton}
-                  onPress={() =>
-                    navigation.navigate("Chi tiết buổi học", {
-                      sessionID: session.id,
-                      selectedDate: selectedDate,
-                      session,
-                    })
-                  }
-                >
-                  <Text style={styles.Button}>Chi tiết</Text>
-                </TouchableOpacity>
-              </Text>
-            ))}
+
+          <ScrollView style={{ maxHeight: 300 }}>
+            {sessions
+              .filter(
+                (session) =>
+                  dayjs(session.startTime).format("YYYY-MM-DD") === selectedDate
+              )
+              .map((session, index) => (
+                <View key={index} style={styles.sessionBox}>
+                  <Text style={styles.eventItem}>
+                    Giờ bắt đầu: {dayjs(session.startTime).format("HH:mm")}
+                    {"\n"}
+                    Giờ kết thúc: {dayjs(session.endTime).format("HH:mm")}
+                    {"\n"}
+                    Tên Wi-Fi Hotspot: {session.wifiHotspot}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.detailButton}
+                    onPress={() =>
+                      navigation.navigate("Chi tiết buổi học", {
+                        sessionID: session.id,
+                        selectedDate: selectedDate,
+                        session,
+                      })
+                    }
+                  >
+                    <Text style={styles.Button}>Chi tiết</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+          </ScrollView>
         </View>
       )}
     </View>
@@ -181,6 +192,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: "#003366",
   },
+  sessionBox: {
+    marginBottom: 15,
+    paddingBottom: 50,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+  },
   eventItem: {
     fontSize: 14,
     color: "#333",
@@ -200,8 +217,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     borderRadius: 50,
-    marginVertical: 25,
+    marginTop: 10,
     borderWidth: 3,
+  },
+  Button: {
+    fontWeight: "bold",
+    color: "#003366",
   },
 });
 
