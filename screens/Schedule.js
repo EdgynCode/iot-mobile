@@ -14,7 +14,6 @@ import { getAllClassSessions } from "../redux/actions/classSession.action";
 import { Ionicons } from "@expo/vector-icons";
 import dayjs from "dayjs";
 
-// Cấu hình tiếng Việt cho lịch
 LocaleConfig.locales["vi"] = {
   monthNames: [
     "Tháng 1",
