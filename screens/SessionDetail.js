@@ -55,8 +55,6 @@ const SessionDetail = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Chi tiết buổi học</Text>
-
       <Text style={styles.item}>
         Ngày học: {dayjs(sessionData.startTime).format("DD-MM-YYYY")}
       </Text>
