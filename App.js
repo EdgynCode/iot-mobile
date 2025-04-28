@@ -22,6 +22,7 @@ import {
   UserInfo,
   EditUserInfo,
   CreateClassSession,
+  EditClassSession,
 } from "./screens";
 import { enableScreens } from "react-native-screens";
 
@@ -115,6 +116,7 @@ export default function App() {
             <Stack.Screen name="Tạo thí nghiệm" component={CreateExperiment} />
             <Stack.Screen name="Sửa thí nghiệm" component={EditExperiment} />
             <Stack.Screen name="Thiết bị" component={Devices} />
+            <Stack.Screen name="Chỉnh sửa buổi học " component={EditClassSession} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

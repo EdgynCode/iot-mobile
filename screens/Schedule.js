@@ -60,21 +60,39 @@ const Schedule = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Tạo buổi học", { selectedDate });
+        <View style={styles.headerRightContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              const sessionData = sessions.find(
+                session =>
+                dayjs(session.startTime).format("YYYY-MM-DD") === selectedDate);
+              if (sessionData) {
+                navigation.navigate("Chỉnh sửa buổi học ", { session: sessionData });
+              } 
+              else {
+                Alert.alert("Thông báo", "Không có buổi học nào trong ngày này");
+              }
           }}
-          style={styles.addButton}
-        >
-          <Ionicons name="add" size={24} color="white" />
-        </TouchableOpacity>
+          style={styles.editButton}
+>
+          <Ionicons name="create" size={24} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Tạo buổi học", { selectedDate });
+            }}
+            style={styles.addButton} 
+          >
+            <Ionicons name="add" size={24} color="white" /> 
+          </TouchableOpacity>
+        </View>
       ),
     });
-  }, [navigation, selectedDate]);
+  }, [navigation, selectedDate, sessions]);
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(getAllClassSessions());
+      dispatch(getAllClassSessions()); 
     }, [dispatch])
   );
 
@@ -84,10 +102,11 @@ const Schedule = ({ navigation }) => {
     return acc;
   }, {});
 
+ 
   markedDates[selectedDate] = {
-    ...markedDates[selectedDate],
-    selected: true,
-    selectedColor: "blue",
+    ...markedDates[selectedDate], 
+    selected: true, 
+    selectedColor: "blue", 
   };
 
   return (
@@ -100,20 +119,21 @@ const Schedule = ({ navigation }) => {
           <Ionicons name="search" size={28} color="black" />
         </TouchableOpacity>
       </View>
+
       <Calendar
         theme={{
-          calendarBackground: "#fff",
-          textSectionTitleColor: "black",
+          calendarBackground: "#fff", 
+          textSectionTitleColor: "black", 
           selectedDayBackgroundColor: "#003366",
-          selectedDayTextColor: "white",
-          todayTextColor: "red",
+          selectedDayTextColor: "white", 
+          todayTextColor: "red", 
           dayTextColor: "black",
           monthTextColor: "black",
-          arrowColor: "black",
+          arrowColor: "black", 
         }}
-        markingType="dot"
+        markingType="dot" 
         markedDates={markedDates}
-        onDayPress={(day) => setSelectedDate(day.dateString)}
+        onDayPress={(day) => setSelectedDate(day.dateString)} 
       />
 
       {sessions.some(
@@ -122,7 +142,7 @@ const Schedule = ({ navigation }) => {
       ) && (
         <View style={styles.eventContainer}>
           <Text style={styles.eventTitle}>
-            Buổi học ngày {dayjs(selectedDate).format("DD/MM/YYYY")}
+            Buổi học ngày {dayjs(selectedDate).format("DD/MM/YYYY")} 
           </Text>
           {sessions
             .filter(
@@ -154,6 +174,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
   },
+  headerRightContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 10, 
+  },
   eventContainer: {
     marginTop: 10,
     padding: 10,
@@ -178,6 +203,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
+  editButton: {
+    backgroundColor: "#003366", 
+    padding: 10, 
+    borderRadius: 10,
+    marginRight: 10, 
+  },
 });
 
 export default Schedule;
+
