@@ -1,7 +1,13 @@
 import React, { useState, useCallback, useLayoutEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+} from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useClassSessionData } from "../hooks/useClassSessionData";
 import { getAllClassSessions } from "../redux/actions/classSession.action";
@@ -64,26 +70,31 @@ const Schedule = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => {
               const sessionData = sessions.find(
-                session =>
-                dayjs(session.startTime).format("YYYY-MM-DD") === selectedDate);
+                (session) =>
+                  dayjs(session.startTime).format("YYYY-MM-DD") === selectedDate
+              );
               if (sessionData) {
-                navigation.navigate("Chỉnh sửa buổi học ", { session: sessionData });
-              } 
-              else {
-                Alert.alert("Thông báo", "Không có buổi học nào trong ngày này");
+                navigation.navigate("Chỉnh sửa buổi học ", {
+                  session: sessionData,
+                });
+              } else {
+                Alert.alert(
+                  "Thông báo",
+                  "Không có buổi học nào trong ngày này"
+                );
               }
-          }}
-          style={styles.editButton}
->
-          <Ionicons name="create" size={24} color="white" />
+            }}
+            style={styles.editButton}
+          >
+            <Ionicons name="create" size={24} color="white" />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Tạo buổi học", { selectedDate });
             }}
-            style={styles.addButton} 
+            style={styles.addButton}
           >
-            <Ionicons name="add" size={24} color="white" /> 
+            <Ionicons name="add" size={24} color="white" />
           </TouchableOpacity>
         </View>
       ),
@@ -92,7 +103,7 @@ const Schedule = ({ navigation }) => {
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(getAllClassSessions()); 
+      dispatch(getAllClassSessions());
     }, [dispatch])
   );
 
@@ -102,11 +113,10 @@ const Schedule = ({ navigation }) => {
     return acc;
   }, {});
 
- 
   markedDates[selectedDate] = {
-    ...markedDates[selectedDate], 
-    selected: true, 
-    selectedColor: "blue", 
+    ...markedDates[selectedDate],
+    selected: true,
+    selectedColor: "blue",
   };
 
   return (
@@ -122,18 +132,18 @@ const Schedule = ({ navigation }) => {
 
       <Calendar
         theme={{
-          calendarBackground: "#fff", 
-          textSectionTitleColor: "black", 
+          calendarBackground: "#fff",
+          textSectionTitleColor: "black",
           selectedDayBackgroundColor: "#003366",
-          selectedDayTextColor: "white", 
-          todayTextColor: "red", 
+          selectedDayTextColor: "white",
+          todayTextColor: "red",
           dayTextColor: "black",
           monthTextColor: "black",
-          arrowColor: "black", 
+          arrowColor: "black",
         }}
-        markingType="dot" 
+        markingType="dot"
         markedDates={markedDates}
-        onDayPress={(day) => setSelectedDate(day.dateString)} 
+        onDayPress={(day) => setSelectedDate(day.dateString)}
       />
 
       {sessions.some(
@@ -142,22 +152,39 @@ const Schedule = ({ navigation }) => {
       ) && (
         <View style={styles.eventContainer}>
           <Text style={styles.eventTitle}>
-            Buổi học ngày {dayjs(selectedDate).format("DD/MM/YYYY")} 
+            Buổi học ngày {dayjs(selectedDate).format("DD/MM/YYYY")}
           </Text>
-          {sessions
-            .filter(
-              (session) =>
-                dayjs(session.startTime).format("YYYY-MM-DD") === selectedDate
-            )
-            .map((session, index) => (
-              <Text key={index} style={styles.eventItem}>
-                Giờ bắt đầu: {dayjs(session.startTime).format("HH:mm")}
-                {"\n"}
-                Giờ kết thúc: {dayjs(session.endTime).format("HH:mm")}
-                {"\n"}
-                Tên Wi-Fi Hotspot: {session.wifiHotspot}
-              </Text>
-            ))}
+
+          <ScrollView style={{ maxHeight: 255 }}>
+            {sessions
+              .filter(
+                (session) =>
+                  dayjs(session.startTime).format("YYYY-MM-DD") === selectedDate
+              )
+              .map((session, index) => (
+                <View key={index} style={styles.sessionBox}>
+                  <Text style={styles.eventItem}>
+                    Giờ bắt đầu: {dayjs(session.startTime).format("HH:mm")}
+                    {"\n"}
+                    Giờ kết thúc: {dayjs(session.endTime).format("HH:mm")}
+                    {"\n"}
+                    Tên Wi-Fi Hotspot: {session.wifiHotspot}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.detailButton}
+                    onPress={() =>
+                      navigation.navigate("Chi tiết buổi học", {
+                        sessionID: session.id,
+                        selectedDate: selectedDate,
+                        session,
+                      })
+                    }
+                  >
+                    <Text style={styles.Button}>Chi tiết</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+          </ScrollView>
         </View>
       )}
     </View>
@@ -177,7 +204,7 @@ const styles = StyleSheet.create({
   headerRightContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 10, 
+    marginRight: 10,
   },
   eventContainer: {
     marginTop: 10,
@@ -192,6 +219,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     color: "#003366",
   },
+  sessionBox: {
+    marginBottom: 15,
+    paddingBottom: 10,
+    borderBottomWidth: 0.5,
+    borderColor: "#ccc",
+  },
   eventItem: {
     fontSize: 14,
     color: "#333",
@@ -203,13 +236,21 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
-  editButton: {
-    backgroundColor: "#003366", 
-    padding: 10, 
-    borderRadius: 10,
-    marginRight: 10, 
+  detailButton: {
+    backgroundColor: "white",
+    padding: 5,
+    alignItems: "center",
+    textAlign: "center",
+    justifyContent: "center",
+    width: "100%",
+    borderRadius: 50,
+    marginTop: 10,
+    borderWidth: 3,
+  },
+  Button: {
+    fontWeight: "bold",
+    color: "#003366",
   },
 });
 
 export default Schedule;
-
