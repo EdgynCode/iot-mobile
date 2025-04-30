@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { useClassSessionData } from "../hooks/useClassSessionData";
@@ -235,6 +236,12 @@ const styles = StyleSheet.create({
     marginRight: 20,
     padding: 10,
     borderRadius: 10,
+  },
+  editButton: {
+    backgroundColor: "#003366",
+    padding: 10,
+    borderRadius: 10,
+    marginRight: 10,
   },
   detailButton: {
     backgroundColor: "white",
