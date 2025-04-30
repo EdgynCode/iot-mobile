@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useCallback } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -12,7 +12,10 @@ import {
 import { useClassroomData } from "../hooks/useClassroomData";
 import { useLabData } from "../hooks/useLabData";
 import { useDispatch } from "react-redux";
-import { updateClassSession, getAllClassSessions } from "../redux/actions/classSession.action";
+import {
+  updateClassSession,
+  getAllClassSessions,
+} from "../redux/actions/classSession.action";
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 import RNPickerSelect from "react-native-picker-select";
@@ -27,7 +30,9 @@ const EditClassSession = ({ navigation, route }) => {
   if (!session) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text style={{ color: "red" }}>Không có dữ liệu buổi học để chỉnh sửa!</Text>
+        <Text style={{ color: "red" }}>
+          Không có dữ liệu buổi học để chỉnh sửa!
+        </Text>
       </View>
     );
   }
@@ -45,7 +50,7 @@ const EditClassSession = ({ navigation, route }) => {
     Array.isArray(session.labIds) ? session.labIds[0] : session.labIds
   );
 
-  const handleSave = useCallback(async () => {
+  const handleSave = async () => {
     setLoading(true);
     const id = session.nguoiDayId;
 
@@ -68,10 +73,10 @@ const EditClassSession = ({ navigation, route }) => {
       wifiHotspot: "IOT-Hotspot",
       brokerAddress: "iot.eclipse.org",
       port: 1883,
-      clientId: session.clientId, 
+      clientId: session.clientId,
       labIds: [selectedLabs],
     };
-    
+
     console.log("Dữ liệu gửi lên cập nhật:", sessionData);
 
     dispatch(updateClassSession(sessionData))
@@ -89,15 +94,7 @@ const EditClassSession = ({ navigation, route }) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [
-    session,
-    selectedClass,
-    selectedLabs,
-    startTime,
-    endTime,
-    dispatch,
-    navigation,
-  ]);
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
