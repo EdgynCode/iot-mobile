@@ -18,13 +18,20 @@ export const studentAction = () => [
 export const studentColumns = (navigate) => [
   {
     title: "Họ tên",
-    dataIndex: "fullName",
+    dataIndex: ["firstName", "lastName"],
     key: "fullName",
-    render: (text, record) => (
-      <TouchableOpacity
-        onClick={() => navigate(`/student-detail/${record.id}`)}
-      >
-        <Text>{text}</Text>
+    render: (_, record) => (
+      // <TouchableOpacity
+      //   onClick={() => navigate(`/student-detail/${record.id}`)}
+      // >
+      //   <Text>
+      //     {record.firstName} {record.lastName}
+      //   </Text>
+      // </TouchableOpacity>
+      <TouchableOpacity>
+        <Text>
+          {record.firstName} {record.lastName}
+        </Text>
       </TouchableOpacity>
     ),
   },
@@ -44,36 +51,5 @@ export const studentColumns = (navigate) => [
     ],
     filterMode: "tree",
     onFilter: (value, record) => record.gender.includes(value),
-  },
-  {
-    title: "Lớp",
-    dataIndex: "nguoiHocLopHocs",
-    key: "nguoiHocLopHocs",
-    render: (text) => (
-      <TouchableOpacity>
-        <Text>{text}</Text>
-      </TouchableOpacity>
-    ),
-  },
-  {
-    title: "Chức vụ",
-    dataIndex: "role",
-    key: "role",
-    filters: [
-      {
-        text: "Lớp trưởng",
-        value: "Lớp trưởng",
-      },
-      {
-        text: "Lớp phó",
-        value: "Lớp phó",
-      },
-      {
-        text: "Học sinh",
-        value: "",
-      },
-    ],
-    filterMode: "tree",
-    onFilter: (value, record) => record.role.includes(value),
   },
 ];
