@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   Alert,
-  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
   View,
   ActivityIndicator,
 } from "react-native";
@@ -70,7 +71,10 @@ const CreateExperiment = ({ navigation, route }) => {
           <ActivityIndicator size="large" color="#f7f7f7" />
         </View>
       )}
-      <ScrollView style={styles.scrollContainer}>
+      <KeyboardAvoidingView
+        style={styles.scrollContainer}
+        behavior={Platform.OS === "android" ? "padding" : "height"}
+      >
         <Text style={styles.label}>Tên thí nghiệm</Text>
         <TextInput
           style={styles.input}
@@ -94,7 +98,7 @@ const CreateExperiment = ({ navigation, route }) => {
           onChangeText={setPathImage}
           placeholder="Link ảnh"
         />
-      </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 };

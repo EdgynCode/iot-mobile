@@ -5,9 +5,10 @@ import {
   Text,
   TextInput,
   Alert,
-  ScrollView,
   View,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useClassroomData } from "../hooks/useClassroomData";
 import { useLabData } from "../hooks/useLabData";
@@ -98,7 +99,10 @@ const CreateClassSession = ({ navigation, route }) => {
           <ActivityIndicator size="large" color="#f7f7f7" />
         </View>
       )}
-      <ScrollView style={styles.scrollContainer}>
+      <KeyboardAvoidingView
+        style={styles.scrollContainer}
+        behavior={Platform.OS === "android" ? "padding" : "height"}
+      >
         <Text style={styles.label}>Ngày bắt đầu</Text>
         <TextInput
           style={styles.input}
@@ -157,7 +161,7 @@ const CreateClassSession = ({ navigation, route }) => {
           }}
           value={selectedLabs}
         />
-      </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 };

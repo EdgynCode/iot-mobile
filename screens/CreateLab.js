@@ -5,9 +5,10 @@ import {
   Text,
   TextInput,
   Alert,
-  ScrollView,
   View,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { createLab } from "../redux/actions/lab.action";
@@ -61,7 +62,10 @@ const CreateLab = ({ navigation }) => {
           <ActivityIndicator size="large" color="#f7f7f7" />
         </View>
       )}
-      <ScrollView style={styles.scrollContainer}>
+      <KeyboardAvoidingView
+        style={styles.scrollContainer}
+        behavior={Platform.OS === "android" ? "padding" : "height"}
+      >
         <Text style={styles.label}>Tên bài lab</Text>
         <TextInput
           style={styles.input}
@@ -76,7 +80,7 @@ const CreateLab = ({ navigation }) => {
           onChangeText={setPathImage}
           placeholder="Link ảnh"
         />
-      </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 };

@@ -41,25 +41,32 @@ const login = async (userName, password) => {
     password,
   });
   if (response.data) {
-    await SecureStore.setItemAsync("user", JSON.stringify(response.data));
+    const { userId, jwtAccessToken, jwtRefreshToken } = response.data;
+    await SecureStore.setItemAsync("accessToken", jwtAccessToken);
+    await SecureStore.setItemAsync("refreshToken", jwtRefreshToken);
+    await SecureStore.setItemAsync("userId", userId);
   }
   return response.data;
 };
 
 const logout = async () => {
   try {
-    const storedUser = JSON.parse(await SecureStore.getItemAsync("user"));
-    if (!storedUser?.jwtAccessToken) {
+    const accessToken = await SecureStore.getItemAsync("accessToken");
+
+    if (!accessToken) {
       throw new Error("No access token found for logout.");
     }
 
     const response = await axiosInstance.delete("Account/Logout", {
       headers: {
-        Authorization: `Bearer ${storedUser.jwtAccessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    await SecureStore.deleteItemAsync("user");
+    await SecureStore.deleteItemAsync("accessToken");
+    await SecureStore.deleteItemAsync("refreshToken");
+    await SecureStore.deleteItemAsync("userId");
+
     return response.data;
   } catch (error) {
     console.error("Logout error:", error.response?.data || error.message);

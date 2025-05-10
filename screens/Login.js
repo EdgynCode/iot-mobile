@@ -8,6 +8,8 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
@@ -40,7 +42,10 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "android" ? "padding" : "height"}
+    >
       <Image source={require("../assets/logo.png")} style={styles.logo} />
       <Text style={styles.title}>
         TRƯỜNG ĐẠI HỌC SƯ PHẠM {"\n"} THÀNH PHỐ HỒ CHÍ MINH
@@ -108,7 +113,7 @@ const Login = ({ navigation }) => {
           </View>
         )}
       </Formik>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
