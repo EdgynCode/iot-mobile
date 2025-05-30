@@ -7,6 +7,9 @@ import deviceReducer from "./slices/device.slice";
 import studentReducer from "./slices/student.slice";
 import classroomReducer from "./slices/classroom.slice";
 import experimentReducer from "./slices/experiment.slice";
+import assignmentReducer from "./slices/assignment.slice";
+import groupReducer from "./slices/group.slice";
+import submissionReducer from "./slices/submission.slice";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +21,9 @@ export const store = configureStore({
     devices: deviceReducer,
     students: studentReducer,
     experiments: experimentReducer,
+    assignments: assignmentReducer,
+    groups: groupReducer,
+    submissions: submissionReducer,
   },
   devTools: true,
 });
