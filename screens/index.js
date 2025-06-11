@@ -13,3 +13,5 @@ export { default as CreateClassSession } from "./CreateClassSession";
 export { default as Devices } from "./Devices";
 export { default as SessionDetail } from "./SessionDetail";
 export { default as EditClassSession } from "./EditClassSession";
+export { default as Assignments } from "./Assignments";
+export { default as CreateAssignment } from "./CreateAssignment";

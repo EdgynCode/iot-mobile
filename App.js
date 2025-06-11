@@ -24,6 +24,8 @@ import {
   CreateClassSession,
   SessionDetail,
   EditClassSession,
+  Assignments,
+  CreateAssignment,
 } from "./screens";
 import { enableScreens } from "react-native-screens";
 
@@ -49,6 +51,9 @@ function AppMainScreen() {
             case "Bài thực hành":
               iconName = focused ? "book" : "book-outline";
               break;
+            case "Bài tập":
+              iconName = focused ? "clipboard" : "clipboard-outline";
+              break;
             case "Loại thiết bị":
               iconName = focused ? "hardware-chip" : "hardware-chip-outline";
               break;
@@ -70,6 +75,7 @@ function AppMainScreen() {
       <Tab.Screen name="Buổi học" component={Schedule} />
       <Tab.Screen name="Học sinh" component={Students} />
       <Tab.Screen name="Bài thực hành" component={Labs} />
+      <Tab.Screen name="Bài tập" component={Assignments} />
       <Tab.Screen name="Loại thiết bị" component={DeviceTypes} />
       <Tab.Screen name="Tài khoản" component={UserInfo} />
     </Tab.Navigator>
@@ -116,6 +122,7 @@ export default function App() {
             <Stack.Screen name="Tạo bài thực hành" component={CreateLab} />
             <Stack.Screen name="Tạo thí nghiệm" component={CreateExperiment} />
             <Stack.Screen name="Sửa thí nghiệm" component={EditExperiment} />
+            <Stack.Screen name="Tạo bài tập" component={CreateAssignment} />
             <Stack.Screen name="Thiết bị" component={Devices} />
             <Stack.Screen name="Chi tiết buổi học" component={SessionDetail} />
             <Stack.Screen

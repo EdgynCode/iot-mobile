@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { getAllAssignments } from "../redux/actions/assignmentAction";
+import { getAllAssignments } from "../redux/actions/assignment.action";
 
 export const useAssignmentData = () => {
   const dispatch = useDispatch();

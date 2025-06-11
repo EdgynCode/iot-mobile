@@ -3,8 +3,8 @@ import {
   getStudentSubmissions,
   getSubmissionsByAssignment,
   gradeSubmission,
-  revokeSubmission
-} from "../actions/submissionAction";
+  revokeSubmission,
+} from "../actions/submission.action";
 
 const initialState = {
   data: [],
